@@ -1,0 +1,50 @@
+Arguments: 
+  /Users/jack/.nvm/versions/node/v10.16.0/bin/node /usr/local/Cellar/yarn/1.22.5/libexec/bin/yarn.js
+
+PATH: 
+  /usr/local/opt/openjdk/bin:/Users/jack/.nvm/versions/node/v10.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/usr/local/opt/openjdk/bin:/Users/jack/.nvm/versions/node/v10.16.0/bin:/Users/jack/Library/Android/sdk/tools:/Users/jack/Library/Android/sdk/platform-tools:/Users/jack/Library/Android/sdk/tools:/Users/jack/Library/Android/sdk/platform-tools
+
+Yarn version: 
+  1.22.5
+
+Node version: 
+  10.16.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@babel%2fpreset-latest: Not found
+      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.22.5/libexec/lib/cli.js:66988:18)
+      at Request.self.callback (/usr/local/Cellar/yarn/1.22.5/libexec/lib/cli.js:140749:22)
+      at Request.emit (events.js:198:13)
+      at Request.<anonymous> (/usr/local/Cellar/yarn/1.22.5/libexec/lib/cli.js:141721:10)
+      at Request.emit (events.js:198:13)
+      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.22.5/libexec/lib/cli.js:141643:12)
+      at Object.onceWrapper (events.js:286:20)
+      at IncomingMessage.emit (events.js:203:15)
+      at endReadableNT (_stream_readable.js:1129:12)
+      at process._tickCallback (internal/process/next_tick.js:63:19)
+
+npm manifest: 
+  {
+    "name": "personal",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+      "rollup": "rollup -c"
+    },
+    "devDependencies": {
+      "@babel/core": "^7.11.6",
+      "@babel/plugin-external-helpers": "^7.10.4",
+      "@babel/preset-latest": "",
+      "rollup-plugin-babel": "^4.4.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
