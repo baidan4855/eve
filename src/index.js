@@ -1,12 +1,15 @@
+import { Symbols } from "./constant/symbols";
 import {prepareEnv} from './env'
-import {getBinaryImage} from './api'
+import { getBinaryImage, detectSymbol } from "./api";
+import { confirmCapacity } from "./sensor";
 
 const main = () => {
     prepareEnv()
 
-const pic = getBinaryImage()
-image.saveTo(pic,'/sdcard/ttttest.png') 
-toast('aa1a')
+    const screenshot = getBinaryImage();
+    // image.saveTo("/sdcard/100.png");
+    const rst = confirmCapacity(screenshot);
+    logd(rst, "xx");
 }
 
 main()
