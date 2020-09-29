@@ -35,11 +35,3 @@ export const detectSymbol = ({ screenshot, symbol, countOfExpect = 1 }) => {
   );
   return result;
 };
-
-// 关闭窗口
-export const closeAllWindow = () => {
-    let r = acEvent.clickPoint(1455,42)
-    sleep(140)
-    swipeToPoint(1000, 400, 900,360,400)
-    sleep(500)
-}

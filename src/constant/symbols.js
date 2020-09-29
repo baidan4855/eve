@@ -27,4 +27,25 @@ export const Symbols = Object.freeze({
     area: [100, 94, 132, 106],
     similarity: 0.8,
   },
+  小眼睛: {
+    file: readResAutoImage("小眼睛"),
+    area: [1133, 395, 1583, 412],
+    similarity: 0.7,
+  },
+  矿枪: {
+    file: readResAutoImage("矿枪"),
+    area: [1198, 551, 1408, 601],
+  },
 });
+
+export const EnvSymbols = Object.freeze([
+  {
+    location: "空间站",
+    ...Symbols.离站按钮,
+  },
+  {
+    location: "太空",
+    ...Symbols.小眼睛,
+  },
+  {},
+]);
