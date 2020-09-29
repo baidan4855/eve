@@ -53,8 +53,20 @@ function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
 
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+}
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+}
+
 function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
+}
+
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
 }
 
 function _iterableToArrayLimit(arr, i) {
@@ -101,11 +113,16 @@ function _arrayLikeToArray(arr, len) {
   return arr2;
 }
 
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 var DEFAULT_THRESHOLD = 90;
+var NUMBERS = [readResAutoImage("库容数字0.png"), readResAutoImage("库容数字1.png"), readResAutoImage("库容数字2.png"), readResAutoImage("库容数字3.png"), readResAutoImage("库容数字4.png"), readResAutoImage("库容数字5.png"), readResAutoImage("库容数字6.png"), readResAutoImage("库容数字7.png"), readResAutoImage("库容数字8.png"), readResAutoImage("库容数字9.png")];
 var Symbols = Object.freeze({
   离站按钮: {
     file: readResAutoImage("离站.png"),
@@ -113,30 +130,63 @@ var Symbols = Object.freeze({
     similarity: 0.9
   },
   仓库图标: {
-    file: readResAutoImage("仓库图标"),
+    file: readResAutoImage("仓库图标.png"),
     area: [67, 86, 91, 113],
     similarity: 0.9
   },
   库容数字: {
-    files: [readResAutoImage("库容数字0.png"), readResAutoImage("库容数字1.png"), readResAutoImage("库容数字2.png"), readResAutoImage("库容数字3.png"), readResAutoImage("库容数字4.png"), readResAutoImage("库容数字5.png"), readResAutoImage("库容数字6.png"), readResAutoImage("库容数字7.png"), readResAutoImage("库容数字8.png"), readResAutoImage("库容数字9.png")],
+    files: NUMBERS,
     area: [100, 94, 132, 106],
     similarity: 0.8
   },
   小眼睛: {
-    file: readResAutoImage("小眼睛"),
-    area: [1133, 395, 1583, 412],
-    similarity: 0.7
+    file: readResAutoImage("小眼睛.png"),
+    area: [1133, 395, 1600, 413],
+    similarity: 0.3
   },
   矿枪: {
-    file: readResAutoImage("矿枪"),
-    area: [1198, 551, 1408, 601]
+    file: readResAutoImage("矿枪.png"),
+    area: [1198, 551, 1408, 601],
+    similarity: 0.7
+  },
+  激活标识: {
+    file: readResAutoImage("激活标识.png"),
+    offset: [25, -12, 31, -2],
+    similarity: 0.8
+  },
+  矿石图标: {
+    file: readResAutoImage("矿石图标.png"),
+    area: [1206, 85, 1216, 550],
+    similarity: 0.7
+  },
+  矿石距离: {
+    files: NUMBERS,
+    offset: [58, -7, 73, 4],
+    similarity: 0.8
+  },
+  锁定标识: {
+    file: readResAutoImage("锁定标识.png"),
+    area: [-8, 0, 17, 8],
+    similarity: 0.8
+  },
+  卸货站: {
+    file: readResAutoImage("卸货站.png"),
+    area: [1291, 55, 1369, 390],
+    similarity: 0.8
+  },
+  矿场图标: {
+    file: readResAutoImage("矿场图标.png"),
+    area: [1204, 83, 1219, 512],
+    similarity: 0.7
   }
 });
 var EnvSymbols = Object.freeze([_objectSpread2({
   location: "空间站"
 }, Symbols.离站按钮), _objectSpread2({
+  location: "矿场"
+}, Symbols.矿石图标), _objectSpread2({
   location: "太空"
-}, Symbols.小眼睛), {}]);
+}, Symbols.小眼睛)]);
 
 // 启动服务
 var autoServiceStart = function autoServiceStart(time) {
@@ -223,69 +273,75 @@ var detectSymbol = function detectSymbol(_ref) {
   var file = symbol.file,
       area = symbol.area,
       similarity = symbol.similarity;
+  logd(file, area, similarity);
   var result = image.matchTemplate(screenshot, file, similarity, similarity, toRect(area), -1, countOfExpect);
-  return result;
+  return result || null;
 };
 
-var detectCapacity = function detectCapacity(screenshot) {
-  var _Symbols$ = Symbols.库容数字,
-      files = _Symbols$.files,
-      area = _Symbols$.area,
-      similarity = _Symbols$.similarity;
-  var numbers = [];
-  files.forEach(function (file, index) {
-    var result = detectSymbol({
-      screenshot: screenshot,
-      symbol: {
-        file: file,
-        area: area,
-        similarity: similarity
-      },
-      countOfExpect: 2
-    });
-    sleep(10);
+var Points = {
+  关闭按钮: [1455, 42],
+  调整视角: [1000, 400, 900, 360],
+  仓库按钮: [110, 100],
+  矿石舱: [180, 620],
+  全选按钮: [1174, 642],
+  移动至: [120, 150],
+  物品机库: [520, 160],
+  菜单开关: [1300, 30],
+  菜单内空间站选项: [1300, 272],
+  菜单内采矿选项: [1300, 555]
+};
 
-    if (result) {
-      logd(index, result);
-      result.forEach(function (_ref) {
-        var point = _ref.point,
-            similarity = _ref.similarity;
-        var i = numbers.findIndex(function (_ref2) {
-          var x = _ref2.x;
-          return Math.abs(x - point.x) < 3;
-        });
+var click = function click(point, delay) {
+  var _acEvent;
 
-        if (i === -1) {
-          numbers.push({
-            x: point.x,
-            s: similarity,
-            n: index
-          });
-        } else if (numbers[i].similarity < similarity) {
-          numbers[i] = {
-            x: point.x,
-            s: similarity,
-            n: index
-          };
-        }
-      });
-    }
+  (_acEvent = acEvent).clickPoint.apply(_acEvent, _toConsumableArray(point));
+
+  if (delay) sleep(delay);
+};
+var gotoWork = function gotoWork() {
+  sleep(100);
+  var screenshot = getBinaryImage();
+  var rst = detectSymbol({
+    screenshot: screenshot,
+    symbol: Symbols.小眼睛,
+    countOfExpect: 1
   });
-  if (numbers.length == 0) return null;
-  numbers.sort(function (a, b) {
-    return a.x - b.x;
+  logd(rst);
+  if (!rst) return null;
+
+  if (rst[0].point.x - Symbols.小眼睛.area[0] > 3) {
+    click([rst[0].point.x, rst[0].point.y], 1500);
+  }
+
+  click(Points.菜单开关, 1000);
+  click(Points.菜单内采矿选项, 1000);
+  image.recycle(screenshot);
+  screenshot = getBinaryImage();
+  if (!screenshot) return;
+  rst = detectSymbol({
+    screenshot: screenshot,
+    symbol: Symbols.矿场图标,
+    countOfExpect: 6
   });
-  return numbers.reduce(function (acc, cur, index, arr) {
-    return acc + cur.n * Math.pow(10, arr.length - index - 1);
-  }, 0);
+  logd(rst);
+  if (!rst || rst.length < 2) return;
+  var targetIndex = Math.ceil(Math.random() * (rst.length - 1));
+  var target = rst[targetIndex].point;
+  click([target.x, target.y], 2000);
+  click([target.x - 50, target.y + 80], 1000);
 };
 
 var main = function main() {
-  prepareEnv();
-  var img = getBinaryImage();
-  logd(img);
-  var i = detectCapacity(img);
-  logd(i);
+  prepareEnv(); // let c = detectSymbol({
+  //   screenshot: getBinaryImage(),
+  //   symbol: Symbols.矿石图标,
+  //   countOfExpect: 1,
+  // });
+  // logd(c);
+  // let i = detectEnv();
+  // logd(i);
+
+  gotoWork(); // image.saveTo(getBinaryImage(), "/sdcard/test1.png");
 };
 
 main();

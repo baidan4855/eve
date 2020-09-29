@@ -119,7 +119,7 @@ S.get = function () {
 /**
  * 获取节点信息
  * @param timeout 超时时间
- * @return {Array} 节点信息集合
+ * @return 节点信息集合
  */
 S.prototype.getNodeInfo = function (timeout) {
     return getNodeInfo(this, timeout);
@@ -128,7 +128,7 @@ S.prototype.getNodeInfo = function (timeout) {
 /**
  * 通过选择器 获取第一个节点信息
  * @param timeout 等待时间，单位是毫秒
- * @return {NodeInfo} 对象或者null
+ * @return 对象或者null
  */
 S.prototype.getOneNodeInfo = function (timeout) {
     return getOneNodeInfo(this, timeout);

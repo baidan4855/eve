@@ -1,4 +1,4 @@
-import { Symbols } from "./constant/symbols";
+import { Symbols, EnvSymbols } from "./constant/symbols";
 import { detectSymbol, getBinaryImage } from "./api";
 import { closeAllWindow } from "./actions";
 
@@ -49,38 +49,41 @@ export const confirmCapacity = () => {
   return null;
 };
 
-
 // 检查当前地点
 export const detectEnv = () => {
-    let binary = getBinaryImage()
-    if(!binary) return
-    let env = null
-    let bestSimilarity = null
-    let mine = false
-    for(let i=0;i<EnvSign.length;i++){
-        let ret = detectImage(binary,EnvSign[i].sign,1,EnvSign[i].left,EnvSign[i].top,EnvSign[i].right,EnvSign[i].bottom)
+  let screenshot = getBinaryImage();
+  if (!screenshot) return;
+  let env = null;
+  let bestSimilarity = null;
+  let mine = false;
+  for (let i = 0; i < EnvSymbols.length; i++) {
+    let ret = detectSymbol({
+      screenshot,
+      symbol: EnvSymbols[i],
+      countOfExpect: 1,
+    });
 
-        if(ret && EnvSign[i].location === Location.mine && ret[0].similarity > 0.8){
-            mine = true
-        }
-        if(ret && (bestSimilarity===null ||  ret[0].similarity > bestSimilarity.similarity)){
-            bestSimilarity = ret[0]
-            env = EnvSign[i].location
-        }
+    if (ret && EnvSymbols[i].location === "矿场") {
+      mine = true;
     }
-
-    image.recycle(binary)
-
-    if(mine && env === Location.space)
-        env= Location.mine
-
-
-    if(!env){
-        logd('尝试关闭窗口')
-        // 环境检查失败，可能是有打开的窗口，关闭窗口重试
-        closeAllWindow()
-        sleep(500)
-        env = detectEnv()
+    if (
+      ret &&
+      (bestSimilarity === null || ret[0].similarity > bestSimilarity.similarity)
+    ) {
+      bestSimilarity = ret[0];
+      env = EnvSymbols[i].location;
     }
-    return env
-}
+    logd(EnvSymbols[i].location, ret, env, JSON.stringify(bestSimilarity));
+  }
+
+  image.recycle(screenshot);
+
+  if (mine && env === "太空") env = "矿场";
+
+  if (!env) {
+    closeAllWindow();
+    sleep(500);
+    env = detectEnv();
+  }
+  return env;
+};

@@ -24,6 +24,7 @@ const toRect = (area) => {
 // 查找图片
 export const detectSymbol = ({ screenshot, symbol, countOfExpect = 1 }) => {
   const { file, area, similarity } = symbol;
+  logd(file, area, similarity);
   let result = image.matchTemplate(
     screenshot,
     file,
@@ -33,5 +34,5 @@ export const detectSymbol = ({ screenshot, symbol, countOfExpect = 1 }) => {
     -1,
     countOfExpect
   );
-  return result;
+  return result || null;
 };

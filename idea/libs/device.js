@@ -382,46 +382,4 @@ DeviceWrapper.prototype.getMacAddress = function () {
     return javaString2string(deviceWrapper.getMacAddress());
 };
 
-/**
- * 保持屏幕唤醒状态
- */
-DeviceWrapper.prototype.keepScreenOn = function () {
-    if (deviceWrapper == null) {
-        return;
-    }
-    deviceWrapper.keepScreenOn();
-};
-
-/**
- * 保持设备唤醒
- * @param flag 参考安卓PowerManager中的唤醒标准
- */
-DeviceWrapper.prototype.keepAwake = function (flag) {
-    if (deviceWrapper == null) {
-        return;
-    }
-    deviceWrapper.keepAwake(flag);
-};
-
-/**
- * 保持设备昏暗状态
- */
-DeviceWrapper.prototype.keepScreenDim = function () {
-    if (deviceWrapper == null) {
-        return;
-    }
-    deviceWrapper.keepScreenDim();
-};
-/**
- * 取消保持唤醒状态
- */
-DeviceWrapper.prototype.cancelKeepingAwake = function () {
-    if (deviceWrapper == null) {
-        return;
-    }
-    deviceWrapper.cancelKeepingAwake();
-};
-
-
-
 
