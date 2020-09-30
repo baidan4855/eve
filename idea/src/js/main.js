@@ -49,80 +49,7 @@ function _objectSpread2(target) {
   return target;
 }
 
-function _slicedToArray(arr, i) {
-  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-}
-
-function _toConsumableArray(arr) {
-  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-}
-
-function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) return _arrayLikeToArray(arr);
-}
-
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-function _iterableToArray(iter) {
-  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
-}
-
-function _iterableToArrayLimit(arr, i) {
-  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-  var _e = undefined;
-
-  try {
-    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-}
-
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-
-  return arr2;
-}
-
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
 var DEFAULT_THRESHOLD = 90;
-var NUMBERS = [readResAutoImage("库容数字0.png"), readResAutoImage("库容数字1.png"), readResAutoImage("库容数字2.png"), readResAutoImage("库容数字3.png"), readResAutoImage("库容数字4.png"), readResAutoImage("库容数字5.png"), readResAutoImage("库容数字6.png"), readResAutoImage("库容数字7.png"), readResAutoImage("库容数字8.png"), readResAutoImage("库容数字9.png")];
 var Symbols = Object.freeze({
   离站按钮: {
     file: readResAutoImage("离站.png"),
@@ -134,10 +61,10 @@ var Symbols = Object.freeze({
     area: [67, 86, 91, 113],
     similarity: 0.9
   },
-  库容数字: {
-    files: NUMBERS,
+  库容: {
     area: [100, 94, 132, 106],
-    similarity: 0.8
+    similarity: 0.8,
+    files: [readResAutoImage("库容数字0.png"), readResAutoImage("库容数字1.png"), readResAutoImage("库容数字2.png"), readResAutoImage("库容数字3.png"), readResAutoImage("库容数字4.png"), readResAutoImage("库容数字5.png"), readResAutoImage("库容数字6.png"), readResAutoImage("库容数字7.png"), readResAutoImage("库容数字8.png"), readResAutoImage("库容数字9.png")]
   },
   小眼睛: {
     file: readResAutoImage("小眼睛.png"),
@@ -152,31 +79,31 @@ var Symbols = Object.freeze({
   激活标识: {
     file: readResAutoImage("激活标识.png"),
     offset: [25, -12, 31, -2],
-    similarity: 0.8
+    similarity: 0.5
   },
   矿石图标: {
     file: readResAutoImage("矿石图标.png"),
-    area: [1206, 85, 1216, 550],
-    similarity: 0.7
+    area: [1206, 84, 1216, 550],
+    similarity: 0.4
   },
   矿石距离: {
-    files: NUMBERS,
-    offset: [58, -7, 73, 4],
-    similarity: 0.8
+    offset: [46, -8, 75, 5],
+    similarity: 0.3,
+    files: [readResAutoImage("距离数字0.png"), readResAutoImage("距离数字1.png"), readResAutoImage("距离数字2.png"), readResAutoImage("距离数字3.png"), readResAutoImage("距离数字4.png"), readResAutoImage("距离数字5.png"), readResAutoImage("距离数字6.png"), readResAutoImage("距离数字7.png"), readResAutoImage("距离数字8.png"), readResAutoImage("距离数字9.png")]
   },
   锁定标识: {
     file: readResAutoImage("锁定标识.png"),
-    area: [-8, 0, 17, 8],
-    similarity: 0.8
-  },
-  卸货站: {
-    file: readResAutoImage("卸货站.png"),
-    area: [1291, 55, 1369, 390],
-    similarity: 0.8
+    offset: [13, 0, 18, 9],
+    similarity: 0.3
   },
   矿场图标: {
     file: readResAutoImage("矿场图标.png"),
     area: [1204, 83, 1219, 512],
+    similarity: 0.7
+  },
+  卸货空间站: {
+    file: readResAutoImage('驻地空间站'),
+    area: [1289, 72, 1371, 372],
     similarity: 0.7
   }
 });
@@ -249,99 +176,44 @@ var getBinaryImage = function getBinaryImage() {
   return null;
 };
 
-var toRect = function toRect(area) {
-  var _area = _slicedToArray(area, 4),
-      left = _area[0],
-      top = _area[1],
-      right = _area[2],
-      bottom = _area[3];
-
-  var rect = new Rect();
-  rect.left = left;
-  rect.top = top;
-  rect.right = right;
-  rect.bottom = bottom;
-  return rect;
-}; // 查找图片
-
-
-var detectSymbol = function detectSymbol(_ref) {
-  var screenshot = _ref.screenshot,
-      symbol = _ref.symbol,
-      _ref$countOfExpect = _ref.countOfExpect,
-      countOfExpect = _ref$countOfExpect === void 0 ? 1 : _ref$countOfExpect;
-  var file = symbol.file,
-      area = symbol.area,
-      similarity = symbol.similarity;
-  logd(file, area, similarity);
-  var result = image.matchTemplate(screenshot, file, similarity, similarity, toRect(area), -1, countOfExpect);
-  return result || null;
-};
-
-var Points = {
-  关闭按钮: [1455, 42],
-  调整视角: [1000, 400, 900, 360],
-  仓库按钮: [110, 100],
-  矿石舱: [180, 620],
-  全选按钮: [1174, 642],
-  移动至: [120, 150],
-  物品机库: [520, 160],
-  菜单开关: [1300, 30],
-  菜单内空间站选项: [1300, 272],
-  菜单内采矿选项: [1300, 555]
-};
-
-var click = function click(point, delay) {
-  var _acEvent;
-
-  (_acEvent = acEvent).clickPoint.apply(_acEvent, _toConsumableArray(point));
-
-  if (delay) sleep(delay);
-};
-var gotoWork = function gotoWork() {
-  sleep(100);
-  var screenshot = getBinaryImage();
-  var rst = detectSymbol({
-    screenshot: screenshot,
-    symbol: Symbols.小眼睛,
-    countOfExpect: 1
-  });
-  logd(rst);
-  if (!rst) return null;
-
-  if (rst[0].point.x - Symbols.小眼睛.area[0] > 3) {
-    click([rst[0].point.x, rst[0].point.y], 1500);
-  }
-
-  click(Points.菜单开关, 1000);
-  click(Points.菜单内采矿选项, 1000);
-  image.recycle(screenshot);
-  screenshot = getBinaryImage();
-  if (!screenshot) return;
-  rst = detectSymbol({
-    screenshot: screenshot,
-    symbol: Symbols.矿场图标,
-    countOfExpect: 6
-  });
-  logd(rst);
-  if (!rst || rst.length < 2) return;
-  var targetIndex = Math.ceil(Math.random() * (rst.length - 1));
-  var target = rst[targetIndex].point;
-  click([target.x, target.y], 2000);
-  click([target.x - 50, target.y + 80], 1000);
-};
+ß;
 
 var main = function main() {
-  prepareEnv(); // let c = detectSymbol({
-  //   screenshot: getBinaryImage(),
-  //   symbol: Symbols.矿石图标,
-  //   countOfExpect: 1,
-  // });
-  // logd(c);
-  // let i = detectEnv();
-  // logd(i);
-
-  gotoWork(); // image.saveTo(getBinaryImage(), "/sdcard/test1.png");
+  prepareEnv();
+  image.saveTo(getBinaryImage(), "/sdcard/kkk.png"); //   scan();
+  //   init();
+  //   checkGunsStatus()
+  //   const checkCondition = (status, condition) => {
+  //     let keys = Object.keys(condition);
+  //     for (let i = 0; i < keys.length; i++) {
+  //       if (keys[i] === "mineGun") {
+  //         return inited() === condition[keys[i]];
+  //       } else if (status[keys[i]] !== condition[keys[i]]) {
+  //         return false;
+  //       }
+  //     }
+  //     return true;
+  //   };
+  // while (true) {
+  //   let status = {
+  //     location: null,
+  //     capacity: null,
+  //     mining: null,
+  //   };
+  //   for (let i = 0; i < MainProcess.length; i++) {
+  //     let process = MainProcess[i];
+  //     if (checkCondition(status, process.condition)) {
+  //       if (process.should) {
+  //         let ret = process.should();
+  //         if (ret && process.code) {
+  //           status[process.code] = ret;
+  //         }
+  //       }
+  //     }
+  //   }
+  //   logd(JSON.stringify(status));
+  //   sleep(5000);
+  // }
 };
 
 main();

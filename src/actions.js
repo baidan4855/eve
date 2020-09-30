@@ -1,5 +1,6 @@
 import { Points } from "./constant/points";
 import { Symbols } from "./constant/symbols";
+import {Offsets} from './constant/offsets'
 import { getBinaryImage, detectSymbol } from "./api";
 // 关闭窗口
 export const closeAllWindow = () => {
@@ -9,8 +10,19 @@ export const closeAllWindow = () => {
   sleep(500);
 };
 
-export const click = (point, delay) => {
-  acEvent.clickPoint(...point);
+export const click = (point, delay, offset) => {
+    let pos = []
+    if (Object.prototype.toString.call(point) === "[object Object]") {
+        pos.push(point.x, point.y);
+    } else {
+        pos.push(...point);
+    }
+    if(offset){
+        pos[0]=pos[0]+offset[0]
+        pos[1]=pos[1]+offset[1]
+    }
+    acEvent.clickPoint(pos)
+
   if (delay) sleep(delay);
 };
 
@@ -30,24 +42,40 @@ export const discharge = () => {
 
 export const leaveStation = () => {};
 
-export const gotoWork = () => {
-  sleep(100);
+export const ensureMenuPopup = () => {
   let screenshot = getBinaryImage();
   let rst = detectSymbol({
     screenshot,
     symbol: Symbols.小眼睛,
     countOfExpect: 1,
   });
-  logd(rst);
   if (!rst) return null;
   if (rst[0].point.x - Symbols.小眼睛.area[0] > 3) {
-    click([rst[0].point.x, rst[0].point.y], 1500);
+    click(rst[0].point, 1500);
   }
+};
+ß
+export const backToStation = () => {
+    ensureMenuPopup()
+    click(Points.菜单开关,1000)
+    click(Points.菜单内空间站选项,1000)
+    let screenshot = getBinaryImage();
+    let rst = detectSymbol({
+        screenshot,
+        symbol: Symbols.卸货空间站
+    });
+    if(!rst)return
+    click(rst[0].point, 500)
+    click(rst[0].point,1000, Offsets.跃迁)
+    sleep(5000)
+}
 
+export const gotoWork = () => {
+  sleep(100);
+  ensureMenuPopup();
   click(Points.菜单开关, 1000);
   click(Points.菜单内采矿选项, 1000);
-  image.recycle(screenshot);
-  screenshot = getBinaryImage();
+  let screenshot = getBinaryImage();
   if (!screenshot) return;
   rst = detectSymbol({
     screenshot,
@@ -59,6 +87,6 @@ export const gotoWork = () => {
 
   let targetIndex = Math.ceil(Math.random() * (rst.length - 1));
   let target = rst[targetIndex].point;
-  click([target.x, target.y], 2000);
-  click([target.x - 50, target.y + 80], 1000);
+  click(target, 2000);
+  click(target, 1000,Offsets.跃迁);
 };

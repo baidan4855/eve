@@ -1,45 +1,13 @@
 import { Symbols, EnvSymbols } from "./constant/symbols";
-import { detectSymbol, getBinaryImage } from "./api";
+import { detectSymbol, getBinaryImage, ocrNumber } from "./api";
 import { closeAllWindow } from "./actions";
-
-export const detectCapacity = (screenshot) => {
-  const { files, area, similarity } = Symbols.库容数字;
-  let numbers = [];
-  files.forEach((file, index) => {
-    const result = detectSymbol({
-      screenshot,
-      symbol: { file, area, similarity },
-      countOfExpect: 2,
-    });
-    sleep(10);
-    if (result) {
-      logd(index, result);
-      result.forEach(({ point, similarity }) => {
-        const i = numbers.findIndex(({ x }) => {
-          return Math.abs(x - point.x) < 3;
-        });
-        if (i === -1) {
-          numbers.push({ x: point.x, s: similarity, n: index });
-        } else if (numbers[i].similarity < similarity) {
-          numbers[i] = { x: point.x, s: similarity, n: index };
-        }
-      });
-    }
-  });
-  if (numbers.length == 0) return null;
-
-  numbers.sort((a, b) => a.x - b.x);
-  return numbers.reduce((acc, cur, index, arr) => {
-    return acc + cur.n * Math.pow(10, arr.length - index - 1);
-  }, 0);
-};
 
 export const confirmCapacity = () => {
   let probably = {};
   for (let i = 0; i < 10; i++) {
     let screenshot = getBinaryImage();
     sleep(20);
-    let number = detectCapacity(screenshot);
+    let number = ocrNumber(screenshot, Symbols.库容);
     logd(number);
     if (number !== null) {
       probably[number] = (probably[number] || 0) + 1;
