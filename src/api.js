@@ -47,7 +47,7 @@ export const ocrNumber = (screenshot, symbol) => {
     });
     sleep(10);
     if (result) {
-      logd(index, result);
+      //   logd(index, result);
       result.forEach(({ point, similarity }) => {
         const i = numbers.findIndex(({ x }) => {
           return Math.abs(x - point.x) < 4;

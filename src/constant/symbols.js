@@ -13,8 +13,8 @@ export const Symbols = Object.freeze({
   },
   库容: {
     area: [100, 94, 132, 106],
-    similarity: 0.8,
-    files:  [
+    similarity: 0.7,
+    files: [
       readResAutoImage("库容数字0.png"),
       readResAutoImage("库容数字1.png"),
       readResAutoImage("库容数字2.png"),
@@ -34,13 +34,8 @@ export const Symbols = Object.freeze({
   },
   矿枪: {
     file: readResAutoImage("矿枪.png"),
-    area: [1198, 551, 1408, 601],
-    similarity: 0.7,
-  },
-  激活标识: {
-    file: readResAutoImage("激活标识.png"),
-    offset: [25, -12, 31, -2],
-    similarity: 0.5,
+    offset: [-344, -12, -290, 30],
+    similarity: 0.8,
   },
 
   矿石图标: {
@@ -51,7 +46,7 @@ export const Symbols = Object.freeze({
   矿石距离: {
     offset: [46, -8, 75, 5],
     similarity: 0.3,
-    files:  [
+    files: [
       readResAutoImage("距离数字0.png"),
       readResAutoImage("距离数字1.png"),
       readResAutoImage("距离数字2.png"),
@@ -62,7 +57,7 @@ export const Symbols = Object.freeze({
       readResAutoImage("距离数字7.png"),
       readResAutoImage("距离数字8.png"),
       readResAutoImage("距离数字9.png"),
-    ]
+    ],
   },
   锁定标识: {
     file: readResAutoImage("锁定标识.png"),
@@ -74,10 +69,30 @@ export const Symbols = Object.freeze({
     area: [1204, 83, 1219, 512],
     similarity: 0.7,
   },
-  卸货空间站:{
-    file: readResAutoImage('驻地空间站'),
-    area: [1289,72,1371,372],
+  驻地空间站: {
+    file: readResAutoImage("驻地空间站.png"),
+    area: [1288, 70, 1329, 378],
+    similarity: 0.6,
+  },
+  停靠标识: {
+    file: readResAutoImage("停靠标识.png"),
+    offset: [-316, -10, -275, 320],
     similarity: 0.7,
+  },
+  菜单空间站标识: {
+    file: readResAutoImage('菜单空间站标识.png'),
+    area: [1214,12,1243,41],
+    similarity: 0.9,
+  },
+  菜单采矿标识: {
+    file: readResAutoImage('菜单采矿标识.png'),
+    area: [1214,12,1243,41],
+    similarity: 0.9,
+  },
+  速度100: {
+    file: readResAutoImage('速度100.png'),
+    area: [566,626,613,641],
+    similarity: 0.8,
   }
 });
 

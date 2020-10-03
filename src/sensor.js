@@ -8,7 +8,7 @@ export const confirmCapacity = () => {
     let screenshot = getBinaryImage();
     sleep(20);
     let number = ocrNumber(screenshot, Symbols.库容);
-    logd(number);
+    toast("检查库容:"+number);
     if (number !== null) {
       probably[number] = (probably[number] || 0) + 1;
       if (probably[number] > 1) return number;
@@ -32,6 +32,7 @@ export const detectEnv = () => {
     });
 
     if (ret && EnvSymbols[i].location === "矿场") {
+        
       mine = true;
     }
     if (
@@ -41,7 +42,7 @@ export const detectEnv = () => {
       bestSimilarity = ret[0];
       env = EnvSymbols[i].location;
     }
-    logd(EnvSymbols[i].location, ret, env, JSON.stringify(bestSimilarity));
+
   }
 
   image.recycle(screenshot);

@@ -2,92 +2,103 @@ import { Symbols } from "./constant/symbols";
 import { prepareEnv } from "./env";
 import { getBinaryImage, detectSymbol } from "./api";
 import { confirmCapacity, detectEnv } from "./sensor";
-import { discharge, gotoWork,backToStation } from "./actions";
-import { init, checkGunsStatus,inited, isBusy } from "./mineGuns";
-import { scan } from "./mineRadar";
+import { discharge, gotoWork,backToStation, leaveStation, moveTo,fire } from "./actions";
+import { scanAndDig } from "./mineRadar";
 
 const MainProcess = [
   {
-    code: "location",
     condition: {
-      location: null,
+        location: '空间站',
+        capacity: '>= 10'
     },
-    should: detectEnv,
+    should: discharge,
+    desc: '清空货仓'
   },
   {
     condition: {
-      mineGun: null,
+        location: '空间站',
+        capacity: '< 10'
     },
-    should: init,
-  },
-  {
-    code: "capacity",
-    condition: {
-      capacity: null,
-    },
-    should: confirmCapacity,
+    should: leaveStation,
+    desc: '出站'
   },
   {
     condition: {
-      location: "矿场",
-      capacity: (capacity) => capacity < 95,
+        location: '太空',
+        capacity: '< 90'
     },
-    should: scan,
+    should: gotoWork,
+    desc: '跃迁到矿场'
   },
   {
     condition: {
-        capacity: (capacity) => capacity >= 100
+        location: '矿场',
+        capacity: '< 90'
     },
-    should: scan,
+    should: scanAndDig,
+    desc: '挖挖挖'
   },
-  // {
-  //     condition: {
-  //         capacity: capacity => capacity >= 95
-  //     },
-  //     should:
-  // }
+  {
+      condition: {
+        location: '空间站 !',
+        capacity: '>= 90',
+      },
+      should: backToStation,
+      desc: '回站'
+  }
 ];
 
 const main = () => {
   prepareEnv();
+//   backToStation();return;
+// image.saveTo(getBinaryImage(), '/sdcard/bbbb.png'); return
+  const checkCondition = (status, condition) => {
+    let keys = Object.keys(condition);
+    for (let i = 0; i < keys.length; i++) {
+        let val = condition[keys[i]]
+     
+        if(keys[i] === 'location'){
+            let valArr = val.split(' ')
+            let result = valArr[0] === status.location
+            if(valArr[1] === '!')
+            result = !result
 
-    image.saveTo(getBinaryImage(), "/sdcard/kkk.png");
-//   scan();
-  //   init();
-  //   checkGunsStatus()
-//   const checkCondition = (status, condition) => {
-//     let keys = Object.keys(condition);
-//     for (let i = 0; i < keys.length; i++) {
-//       if (keys[i] === "mineGun") {
-//         return inited() === condition[keys[i]];
-//       } else if (status[keys[i]] !== condition[keys[i]]) {
-//         return false;
-//       }
-//     }
-//     return true;
-//   };
+            if(!result)
+                return false
+        }else if(keys[i] === 'capacity'){
+            let valArr = val.split(' ')
+            let result
+            if(valArr[0] === '=') result = status.capacity===valArr[1]
+            else if(valArr[0] === '>=') result = status.capacity >=valArr[1]
+            else if(valArr[0] === '>') result = status.capacity >valArr[1]
+            else if(valArr[0] === '<=') result = status.capacity <=valArr[1]
+            else if(valArr[0] === '<') result = status.capacity <valArr[1]
+            if(!result) return false
+        }
+      
+    }
+    return true;
+  };
 
-  // while (true) {
-  //   let status = {
-  //     location: null,
-  //     capacity: null,
-  //     mining: null,
-  //   };
-  //   for (let i = 0; i < MainProcess.length; i++) {
-  //     let process = MainProcess[i];
-  //     if (checkCondition(status, process.condition)) {
-  //       if (process.should) {
-  //         let ret = process.should();
-  //         if (ret && process.code) {
-  //           status[process.code] = ret;
-  //         }
-  //       }
-  //     }
-  //   }
+  while (true) {
+  let status = {
+    location: detectEnv(),
+    capacity: confirmCapacity(),
+  };
+  logd('当前状态：',JSON.stringify(status));
+  for  (let i = 0; i < MainProcess.length; i++) {
+    let process = MainProcess[i];
+    if (checkCondition(status, process.condition)) {
+      if (process.should) {
+        toast(process.desc)
+        process.should();
+      }
+    }
+  }
 
-  //   logd(JSON.stringify(status));
-  //   sleep(5000);
-  // }
+  
+  sleep(8000);
+}
 };
 
 
